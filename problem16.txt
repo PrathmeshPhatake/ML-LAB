@@ -1,0 +1,19 @@
+# 16. Use the inbuilt dataset 'titanic'. The dataset contains 891 rows and
+# contains information about the passengers who boarded the unfortunate
+# Titanic ship. Write a code to check how the price of the ticket (column
+# name: 'fare') for each passenger is distributed by plotting a histogram.
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# Load the Titanic dataset
+titanic = pd.read_csv('C:/Users/prath/OneDrive/Desktop/DSML_PRACTICAL/DSML_PRACTICAL/Datasets/Titanic.csv')   
+
+# Plot a histogram for the 'fare' column
+plt.figure(figsize=(8, 5))
+plt.hist(titanic['Fare'], bins=30, color='skyblue', edgecolor='black')
+plt.title('Distribution of Fare Prices', fontsize=14)
+plt.xlabel('Fare', fontsize=12)
+plt.ylabel('Frequency', fontsize=12)
+plt.grid(axis='y', linestyle='--', alpha=0.7)
+plt.show()

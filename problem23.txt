@@ -1,0 +1,46 @@
+# 23. With reference to Table , obtain the Frequency table for the
+# attribute age. From the frequency table you have obtained, calculate the
+# information gain of the frequency table while splitting on Age. (Use step
+# by step Python/Pandas commands)
+
+
+import pandas as pd
+import math
+
+# Sample dataset
+data = {
+    'age': [22, 24, 23, 25, 22, 23, 24, 26],
+    'class': ['Yes', 'No', 'Yes', 'No', 'Yes', 'No', 'Yes', 'No']
+}
+
+df = pd.DataFrame(data)
+
+# Function to calculate entropy
+def calculate_entropy(data, target_column):
+    # Value counts for the target column
+    values = data[target_column].value_counts()
+    entropy = 0
+    for count in values:
+        probability = count / len(data)
+        entropy -= probability * math.log2(probability)
+    return entropy
+
+# Function to calculate information gain
+def calculate_information_gain(data, attribute, target_col):
+    # Calculate total entropy for the target column
+    total_entropy = calculate_entropy(data, target_col)
+    
+    # Calculate the weighted entropy for the attribute (age)
+    values = data[attribute].value_counts(normalize=True)  # Proportions for each age value
+    weighted_entropy = sum(
+        values[value] * calculate_entropy(data[data[attribute] == value], target_col)
+        for value in values.index
+    )
+    
+    # Information Gain: Total entropy - Weighted entropy
+    info_gain = total_entropy - weighted_entropy
+    return info_gain
+
+# Calculate the information gain for 'age' attribute with target 'class'
+info_gain = calculate_information_gain(df, 'age', 'class')
+print("Information Gain for 'age':", info_gain)

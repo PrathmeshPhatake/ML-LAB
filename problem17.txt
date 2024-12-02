@@ -1,0 +1,60 @@
+# 17. Compute Accuracy, Error rate, Precision, Recall for following confusion
+#  matrix ( Use formula for each)
+#  True Positives (TPs): 1
+#  False Negatives (FNs): 8
+#  False Positives (FPs): 1
+#  True Negatives (TNs): 90
+""" Here are the definitions without formulas:
+
+1. True Positives (TP)
+The number of instances where the model correctly predicts the positive class.
+
+2. False Negatives (FN)
+The number of instances where the model fails to predict the positive class, even though the actual class is positive.
+
+3. False Positives (FP)
+The number of instances where the model incorrectly predicts the positive class, even though the actual class is negative.
+
+4. True Negatives (TN)
+The number of instances where the model correctly predicts the negative class.
+
+5. Accuracy
+The measure of how often the model correctly classifies instances (both positive and negative).
+
+6. Error Rate
+The measure of how often the model misclassifies instances. It is the complement of accuracy.
+
+7. Precision
+The proportion of predicted positive instances that are actually positive.
+
+8. Recall (Sensitivity)
+The proportion of actual positive instances that are correctly identified by the model.
+
+
+
+
+
+
+ """
+
+# Given values
+TP = 1  # True Positives
+FN = 8  # False Negatives
+FP = 1  # False Positives
+TN = 90  # True Negatives
+
+# Total observations
+total = TP + FN + FP + TN
+
+# Calculations
+accuracy = (TP + TN) / total
+error_rate = (FP + FN) / total  # Or error_rate = 1 - accuracy
+precision = TP / (TP + FP)
+recall = TP / (TP + FN)
+
+# Print results
+print(f"Accuracy: {accuracy:.2f} (or {accuracy * 100:.2f}%)")
+print(f"Error Rate: {error_rate:.2f} (or {error_rate * 100:.2f}%)")
+print(f"Precision: {precision:.2f} (or {precision * 100:.2f}%)")
+print(f"Recall: {recall:.2f} (or {recall * 100:.2f}%)")
+

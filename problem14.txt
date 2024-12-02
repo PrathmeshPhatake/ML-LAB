@@ -1,0 +1,40 @@
+# 14. Use the covid_vaccine_statewise.csv dataset and perform the following
+# analytics.
+# A. Describe the dataset.
+# B. Number of Males vaccinated
+# C.. Number of females vaccinated
+
+import pandas as pd
+
+data = pd.read_csv('C:/Users/prath/OneDrive/Desktop/DSML_PRACTICAL/DSML_PRACTICAL/Datasets/Covid Vaccine Statewise.csv')
+
+print(data.describe())
+print(data.info())
+
+print(data['Male (Doses Administered)'].sum())
+print(data['Female (Doses Administered)'].sum())
+""" import pandas as pd
+
+# Load the dataset
+data = pd.read_csv('C:/Users/prath/OneDrive/Desktop/DSML_PRACTICAL/DSML_PRACTICAL/Datasets/Covid Vaccine Statewise.csv')
+
+# A. Describe the dataset
+print("Dataset Description:")
+print(data.describe())  # General statistical details
+print("\nDataset Info:")
+print(data.info())  # Information about column types and non-null counts
+
+# B. Number of Males vaccinated (Total Male doses administered)
+if 'Male (Doses Administered)' in data.columns:
+    male_vaccinated = data['Male (Doses Administered)'].sum()
+    print("\nTotal Males Vaccinated (Doses Administered):", male_vaccinated)
+else:
+    print("Column 'Male (Doses Administered)' not found in the dataset.")
+
+# C. Number of Females vaccinated (Total Female doses administered)
+if 'Female (Doses Administered)' in data.columns:
+    female_vaccinated = data['Female (Doses Administered)'].sum()
+    print("\nTotal Females Vaccinated (Doses Administered):", female_vaccinated)
+else:
+    print("Column 'Female (Doses Administered)' not found in the dataset.")
+ """

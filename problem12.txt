@@ -1,0 +1,39 @@
+# 12.Use Iris flower dataset and perform following :
+# 1. Create a box plot for each feature in the dataset.
+# 2. Identify and discuss distributions and identify outliers from them.
+""" Box Plot Analysis - Iris Dataset (Short Explanation)
+Box Plot Overview:
+A box plot (also called a box-and-whisker plot) is a graphical representation used to summarize the distribution of a dataset. It provides a visual way to highlight the central tendency, spread, and presence of outliers in the data. The box plot displays the following key elements:
+Box: The box represents the interquartile range (IQR), which is the range between the 25th percentile (Q1) and the 75th percentile (Q3). The length of the box is a measure of the spread or variability of the data.
+Median Line: The line inside the box represents the median (the 50th percentile), which divides the data into two equal halves. The median is a measure of central tendency.
+Whiskers: The "whiskers" are the lines that extend from either side of the box. They represent the range of the data within 1.5 times the interquartile range (IQR) from Q1 and Q3. Data points outside this range are considered outliers.
+Outliers: Outliers are data points that lie outside the whiskers, indicating that they are significantly different from the rest of the data. These are usually represented as individual points or dots on the plot.
+Box Plot visualizes the distribution of data through quartiles and highlights outliers.
+It shows the median, IQR (interquartile range), and whiskers (range). Data points outside the whiskers are outliers.
+Features in Iris Dataset:
+
+Sepal Length, Sepal Width, Petal Length, and Petal Width are the numeric features in the Iris dataset.
+Interpretation:
+
+Symmetry/Skewness: If the box plot is symmetrical, the data is balanced; if skewed, it indicates more data on one side.
+Outliers: Points outside the whiskers are outliers, which could be due to errors or rare events.
+Spread: The box size shows variability; large box = high variability.
+Outliers and Distributions:
+
+Box plots can reveal outliers and help identify whether the data is normally distributed or skewed.
+In conclusion, box plots help visualize the data's spread, identify outliers, and understand the overall distribution of features in the dataset. """
+
+import pandas as pd 
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+data = pd.read_csv('C:/Users/prath/OneDrive/Desktop/DSML_PRACTICAL/DSML_PRACTICAL/Datasets/IRIS.csv')
+
+numeric_features = ["sepal_length","sepal_width","petal_length","petal_width"]
+
+for feature in numeric_features:
+    sns.boxplot(x=data[feature],color="red")
+    plt.title(f"Box plot of {feature}")
+    plt.xlabel(feature)
+    plt.show()
+

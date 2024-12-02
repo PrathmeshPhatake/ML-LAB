@@ -1,0 +1,45 @@
+# 24. Perform the following operations using Python on a suitable data set,
+# counting unique values of data, format of each column, converting variable
+# data type (e.g. from long to short, vice versa), identifying missing values
+# and filling in the missing values.
+
+import pandas as pd
+import numpy as np
+
+
+data = {
+    'age': [22, 24, 23, np.nan, 22, np.nan, 24, 26],
+    'salary': [50000, 60000, 55000, 58000, np.nan, 60000, 65000, 70000],
+    'city': ['New York', 'Los Angeles', 'Chicago', 'Houston', 'Phoenix', 'Chicago', np.nan, 'Austin'],
+    'experience': [1, 2, 1, 3, 2, 4, 3, 2]
+}
+
+df = pd.DataFrame(data)
+
+# 1. Counting unique values of each column
+unique_counts = df.nunique()
+print("Unique values in each column:\n", unique_counts)
+
+# 2. Checking the format (data type) of each column
+column_types = df.dtypes
+print("\nData types of each column:\n", column_types)
+
+# 3. Converting variable data types
+# Example: Convert 'experience' from int64 to int16
+df['experience'] = df['experience'].astype('int16')
+print("\nData types after conversion:\n", df.dtypes)
+
+# 4. Identifying missing values
+missing_values = df.isnull().sum()
+print("\nMissing values in each column:\n", missing_values)
+
+# 5. Filling missing values
+# Option 1: Fill missing numeric values with the mean
+df['age'] = df['age'].fillna(df['age'].mean())
+df['salary'] = df['salary'].fillna(df['salary'].mean())
+
+# Option 2: Fill missing categorical values with the mode (most frequent value)
+df['city'] = df['city'].fillna(df['city'].mode()[0])
+
+# After filling missing values, let's check the data
+print("\nDataFrame after filling missing values:\n", df)

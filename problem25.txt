@@ -1,0 +1,158 @@
+# 25. Perform Data Cleaning, Data transformation using Python on any data set.
+
+
+""" 1. Load and Inspect the Dataset
+Purpose:
+df.head(): Displays the first few rows for an overview of the dataset.
+df.describe(): Summarizes numerical columns (mean, std, min, max, etc.).
+df.info(): Provides data types and counts of non-null values for each column.
+Key Insight: Identifies missing values (NaN), categorical columns, and numerical columns.
+2. Handling Missing Values
+Steps:
+
+Age Column: Missing values are replaced with the median value of the column using fillna().
+Median is robust to outliers, making it suitable for skewed distributions.
+Fare Column: Missing values are replaced with the mean value using fillna().
+Mean is appropriate for normally distributed data.
+Cabin Column: Dropped entirely using drop() because it likely has too many missing values.
+Alternatives:
+
+Imputation Techniques:
+Use mode for categorical columns.
+Use a predictive model (e.g., KNN Imputer) to estimate missing values based on other features.
+Dropping Rows: If rows with missing values are minimal, drop them using dropna().
+3. Encoding Categorical Variables
+Steps:
+
+Label Encoding: Converts categorical columns (Sex and Embarked) into numerical values:
+Male → 0, Female → 1.
+Embarked values like C, Q, S are converted into integers.
+Done using LabelEncoder from sklearn.
+Alternatives:
+
+One-Hot Encoding: Creates binary columns for each category, e.g., Embarked_C, Embarked_Q, etc.
+Ordinal Encoding: Assigns numeric ranks if categories have an order.
+4. Creating New Features
+Steps:
+
+FamilySize: A new feature created by summing Parch (parents/children aboard) and SibSp (siblings/spouse aboard) + 1 (self).
+Useful to explore the effect of family size on survival.
+Alternatives:
+
+Feature Engineering: Create other meaningful features like IsAlone (based on FamilySize) or group ages into bins (e.g., child, adult, senior).
+5. Normalizing Numerical Features
+Steps:
+
+Normalization: Scales the Age and Fare columns to a range of 0 to 1 using MinMaxScaler.
+Converts values to fall between [0, 1].
+Essential for algorithms sensitive to feature magnitude (e.g., KNN, SVM).
+Alternatives:
+
+Standardization: Scales features to have mean 0 and standard deviation 1 using StandardScaler.
+Robust Scaling: Rescales data using the interquartile range to handle outliers.
+6. Outlier Treatment
+Steps:
+
+Visualization: Boxplots are plotted for Age and Fare to identify outliers.
+IQR Method:
+Calculates the interquartile range (IQR): 
+IQR=Q3−Q1.
+Determines lower and upper bounds: 
+IQR
+Lower=Q1−1.5×IQR
+Upper=Q3+1.5×IQR.
+Clips outliers to the nearest bound using np.clip().
+Alternatives:
+
+Winsorization: Replace outliers with percentiles (e.g., 5th and 95th).
+Log Transformation: Apply log to reduce the impact of extreme values.
+Z-Score Method: Detect outliers using standard deviations from the mean.
+7. Visualization
+Steps:
+
+sns.boxplot: Displays the distribution of values and outliers for Age and Fare before and after treatment.
+Alternatives:
+
+Histograms or KDE Plots: To visualize data distribution.
+Scatter Plots: To check relationships between numerical features and identify outliers.
+Key Cleaning Techniques in This Code
+Missing Value Imputation: Median and mean imputation.
+Feature Engineering: Created a new FamilySize feature.
+Encoding: Label encoding for categorical variables.
+Normalization: Used MinMaxScaler for rescaling numerical features.
+Outlier Treatment: Used IQR-based clipping to handle outliers.
+Visualization: Boxplots for detecting and validating outlier removal. """
+import pandas as pd
+from sklearn.preprocessing import LabelEncoder,MinMaxScaler
+import seaborn as sns
+import matplotlib.pyplot as plt
+import numpy as np
+
+df = pd.read_csv('C:/Users/prath/OneDrive/Desktop/DSML_PRACTICAL/DSML_PRACTICAL/Datasets/Titanic.csv')
+
+print(df.head())
+
+print(df.describe())
+print(df.info())
+
+# Handle Missing values
+df['Age']=df['Age'].fillna(df['Age'].median())
+df['Fare']=df['Fare'].fillna(df['Fare'].mean())
+df = df.drop(columns=['Cabin'])
+
+print(df.info())
+
+# Encode categorical variables
+le = LabelEncoder()
+
+df['Sex'] = le.fit_transform(df['Sex'])
+df['Embarked'] = le.fit_transform(df['Embarked'])
+
+# Create new attribute
+df['FamilySize'] = df['Parch']+df['SibSp']+1
+
+# Normalize Age and Fare
+scaler = MinMaxScaler()
+print(df[['Age','Fare']].head())
+
+df[['Age','Fare']] =  scaler.fit_transform(df[['Age','Fare']])
+
+print(df[['Age','Fare']].head())
+
+# Deal with outliers
+sns.boxplot(x='Age',data=df)
+
+plt.show()
+
+sns.boxplot(x='Fare',data=df)
+
+plt.show()
+
+q1_age = df['Age'].quantile(0.25)
+q3_age = df['Age'].quantile(0.75)
+
+IQR_age = q3_age-q1_age
+
+lower_bound_age = q1_age - 1.5*IQR_age
+upper_bound_age = q3_age + 1.5*IQR_age
+
+df['Age'] = np.clip(df['Age'],lower_bound_age,upper_bound_age)
+
+sns.boxplot(x='Age',data=df)
+
+plt.show()
+
+
+q1_fare = df['Fare'].quantile(0.25)
+q3_fare = df['Fare'].quantile(0.75)
+
+IQR_age = q3_fare-q1_fare
+
+lower_bound_fare = q1_fare - 1.5*IQR_age
+upper_bound_fare = q3_fare + 1.5*IQR_age
+
+df['Fare'] = np.clip(df['Fare'],lower_bound_fare,upper_bound_fare)
+
+sns.boxplot(x='Fare',data=df)
+
+plt.show()

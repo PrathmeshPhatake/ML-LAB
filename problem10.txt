@@ -1,0 +1,53 @@
+import numpy as np
+
+# Step 1: Define points
+points = {
+    "P1": [2, 10],
+    "P2": [2, 5],
+    "P3": [8, 4],
+    "P4": [5, 8],
+    "P5": [7, 5],
+    "P6": [6, 4],
+    "P7": [1, 2],
+    "P8": [4, 9]
+}
+
+# Initial centroids
+centroid_1 = np.array(points["P1"])  # m1
+centroid_2 = np.array(points["P4"])  # m2
+centroid_3 = np.array(points["P7"])  # m3
+
+# Step 2: Distance function
+def euclidean_distance(p1, p2):
+    return np.sqrt(np.sum((p1 - p2) ** 2))
+
+# Step 3: Assign points to clusters
+clusters = {"C1": [], "C2": [], "C3": []}
+
+for key, point in points.items():
+    point = np.array(point)
+    dist_to_c1 = euclidean_distance(point, centroid_1)
+    dist_to_c2 = euclidean_distance(point, centroid_2)
+    dist_to_c3 = euclidean_distance(point, centroid_3)
+    min_dist = min(dist_to_c1, dist_to_c2, dist_to_c3)
+    if min_dist == dist_to_c1:
+        clusters["C1"].append(key)
+    elif min_dist == dist_to_c2:
+        clusters["C2"].append(key)
+    else:
+        clusters["C3"].append(key)
+
+# Step 4: Recompute centroids
+def recompute_centroid(cluster_points):
+    cluster_coords = [np.array(points[p]) for p in cluster_points]
+    return np.mean(cluster_coords, axis=0)
+
+new_centroid_1 = recompute_centroid(clusters["C1"])
+new_centroid_2 = recompute_centroid(clusters["C2"])
+new_centroid_3 = recompute_centroid(clusters["C3"])
+
+# Output Results
+print(f"Cluster assignments:\nC1: {clusters['C1']}\nC2: {clusters['C2']}\nC3: {clusters['C3']}")
+print(f"Updated centroids:\nCentroid 1: {new_centroid_1}\nCentroid 2: {new_centroid_2}\nCentroid 3: {new_centroid_3}")
+print(f"P6 belongs to cluster: {'C1' if 'P6' in clusters['C1'] else 'C2' if 'P6' in clusters['C2'] else 'C3'}")
+print(f"Population around m3 (C3): {len(clusters['C3'])}")

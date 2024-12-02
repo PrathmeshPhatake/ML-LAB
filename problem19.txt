@@ -1,0 +1,28 @@
+
+# 19. Write a Python program to display some basic statistical details like
+# percentile, mean, standard deviation etc (Use python and pandas
+# commands) the species of ‘Iris-setosa’, ‘Iris-versicolor’ and ‘Iris-versicolor’
+# of iris.csv dataset.
+
+import pandas as pd
+
+df = pd.read_csv('C:/Users/prath/OneDrive/Desktop/DSML_PRACTICAL/DSML_PRACTICAL/Datasets/Iris.csv')
+
+print(df.head())
+print(df.sample(10))
+
+species_interest =['Iris-setosa' ,'Iris-versicolor']
+filtered_data = df[df['species'].isin(species_interest)]
+
+numeric_cols = filtered_data.select_dtypes(include=['float64','int64'])
+
+statistics = numeric_cols.describe()
+
+percentile = numeric_cols.quantile([0.25,0.5,0.75])
+
+print(statistics)
+
+print(percentile)
+
+
+

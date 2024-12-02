@@ -1,0 +1,73 @@
+"""  Compute Accuracy, Error rate, Precision, Recall for the following
+ confusion matrix.
+ Here are the definitions without formulas:
+
+1. True Positives (TP)
+The number of instances where the model correctly predicts the positive class.
+
+2. False Negatives (FN)
+The number of instances where the model fails to predict the positive class, even though the actual class is positive.
+
+3. False Positives (FP)
+The number of instances where the model incorrectly predicts the positive class, even though the actual class is negative.
+
+4. True Negatives (TN)
+The number of instances where the model correctly predicts the negative class.
+
+5. Accuracy
+The measure of how often the model correctly classifies instances (both positive and negative).
+
+6. Error Rate
+The measure of how often the model misclassifies instances. It is the complement of accuracy.
+
+7. Precision
+The proportion of predicted positive instances that are actually positive.
+
+8. Recall (Sensitivity)
+The proportion of actual positive instances that are correctly identified by the model.
+
+
+
+
+
+
+
+ 
+ Actual Class\Predicted
+ class
+ cancer = yes
+ cancer = no
+ Total
+ cancer =
+ yes
+ 90
+ 140
+ cancer = no
+ 210
+ 9560
+ (y)Total
+ 300
+ 9700
+ 10000
+ (x) total
+ 230
+ 9770
+ 10000 """
+ # Given confusion matrix values
+TP = 90   # True Positives (cancer = yes and predicted = yes)
+FN = 140  # False Negatives (cancer = yes but predicted = no)
+FP = 210  # False Positives (cancer = no but predicted = yes)
+TN = 9560 # True Negatives (cancer = no and predicted = no)
+
+# Calculations
+accuracy = (TP + TN) / (TP + TN + FP + FN)
+error_rate = 1 - accuracy
+precision = TP / (TP + FP) if (TP + FP) != 0 else 0  # Avoid division by zero
+recall = TP / (TP + FN) if (TP + FN) != 0 else 0  # Avoid division by zero
+
+# Display the results
+print(f"Accuracy: {accuracy:.4f}")
+print(f"Error Rate: {error_rate:.4f}")
+print(f"Precision: {precision:.4f}")
+print(f"Recall: {recall:.4f}")
+

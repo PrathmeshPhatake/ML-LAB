@@ -1,0 +1,68 @@
+
+# 15. Use the dataset 'titanic'. The dataset contains 891 rows and contains
+# information about the passengers who boarded the unfortunate Titanic
+# ship. Use the Seaborn library to see if we can find any patterns in the data.
+
+
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# Load the dataset
+titanic = pd.read_csv('C:/Users/prath/OneDrive/Desktop/DSML_PRACTICAL/DSML_PRACTICAL/Datasets/Titanic.csv')   
+
+# 1. Basic Data Exploration
+print("Dataset Info:\n")
+print(titanic.info())  # Check for missing values and data types
+print("\nDataset Description:\n")
+print(titanic.describe())  # Descriptive statistics for numerical columns
+
+# 2. Visualize Patterns
+
+# A. Survival by Gender
+sns.countplot(data=titanic, x='Survived', hue='Sex', palette='Set2')
+plt.title('Survival Count by Gender')
+plt.xlabel('Survived (0 = No, 1 = Yes)')
+plt.ylabel('Count')
+plt.legend(title='Gender')
+plt.show()
+
+# B. Survival by Passenger Class
+sns.countplot(data=titanic, x='Pclass', hue='Survived', palette='Set1')
+plt.title('Survival Count by Passenger Class')
+plt.xlabel('Passenger Class (1 = First, 2 = Second, 3 = Third)')
+plt.ylabel('Count')
+plt.legend(title='Survived')
+plt.show()
+
+# C. Age Distribution and Survival
+sns.histplot(data=titanic, x='Age', kde=True, hue='Survived', palette='husl')
+plt.title('Age Distribution by Survival')
+plt.xlabel('Age')
+plt.ylabel('Frequency')
+plt.show()
+
+# D. Fare Distribution and Survival
+sns.boxplot(data=titanic, x='Survived', y='Fare', palette='cool')
+plt.title('Fare Distribution by Survival')
+plt.xlabel('Survived (0 = No, 1 = Yes)')
+plt.ylabel('Fare')
+plt.show()
+
+# E. Survival by Embarkation Port
+sns.countplot(data=titanic, x='Embarked', hue='Survived', palette='Set3')
+plt.title('Survival Count by Embarkation Port')
+plt.xlabel('Embarkation Port (C = Cherbourg, Q = Queenstown, S = Southampton)')
+plt.ylabel('Count')
+plt.legend(title='Survived')
+plt.show()
+
+# F. Family Size and Survival
+# Add a new column for Family Size
+titanic['FamilySize'] = titanic['SibSp'] + titanic['Parch']
+sns.countplot(data=titanic, x='FamilySize', hue='Survived', palette='viridis')
+plt.title('Survival Count by Family Size')
+plt.xlabel('Family Size')
+plt.ylabel('Count')
+plt.legend(title='Survived')
+plt.show()

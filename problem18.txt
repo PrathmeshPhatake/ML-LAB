@@ -1,0 +1,43 @@
+
+# 18. Use House_Price prediction dataset. Provide summary statistics (mean,
+# median, minimum, maximum, standard deviation) of variables (categorical
+# vs quantitative) such as- For example, if categorical variable is age groups
+# and quantitative variable is income, then provide summary statistics of
+# income grouped by the age groups.
+""" str.replace('[^0-9]', '', regex=True)
+Purpose: Removes all non-numeric characters from the column's data.
+'[^0-9]': This is a regular expression (regex) pattern.
+[^0-9] matches any character that is not a digit (0-9).
+The ^ indicates negation, so it targets all non-digit characters.
+'': Replaces these matched characters with an empty string (i.e., removes them).
+regex=True: Enables regular expression processing for the replacement.
+Example:
+
+'₹1,200.50' → '120050' (removes "₹", ",", and ".").
+2. .astype(float)
+Purpose: Converts the cleaned string data into a float type.
+After removing non-numeric characters, the data is still a string. This step converts it into a numeric type (float), allowing for mathematical operations.
+Example:
+
+'120050' (string) → 120050.0 (float).
+Why is this important?
+Columns like price or GrossSquareMeters often include formatting (e.g., currency symbols, commas for thousands separators) that interfere with numerical analysis.
+This cleaning step ensures that these values are ready for computations like aggregation, mean, median, or plotting.
+ """
+import pandas as pd
+
+data = pd.read_csv('C:/Users/prath/OneDrive/Desktop/DSML_PRACTICAL/DSML_PRACTICAL/Datasets/House Data.csv')
+
+
+# Clean the data: convert 'price' and 'GrossSquareMeters' to numeric
+data['price'] = data['price'].str.replace('[^0-9]', '', regex=True).astype(float)
+data['GrossSquareMeters'] = data['GrossSquareMeters'].str.replace('[^0-9]', '', regex=True).astype(float)
+
+# Define categorical and quantitative variables
+categorical_var = 'BuildingAge'  # Example categorical variable
+quantitative_vars = ['price', 'GrossSquareMeters']  # Example quantitative variables
+
+# Group by the categorical variable and compute summary statistics
+summary_stats = data.groupby(categorical_var)[quantitative_vars].agg(['mean', 'median', 'min', 'max', 'std'])
+
+print(summary_stats)

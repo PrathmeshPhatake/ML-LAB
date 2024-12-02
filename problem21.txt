@@ -1,0 +1,66 @@
+# 20. Write a program to cluster a set of points using K-means for IRIS
+# dataset. Consider, K=3, clusters. Consider Euclidean distance as the
+# distance measure. Randomly initialize a cluster mean as one of the data
+# points. Iterate at least for 10 iterations. After iterations are over, print the
+# final cluster means for each of the clusters.
+import pandas as pd
+import numpy as np
+import random
+
+# Load the dataset from CSV
+data = pd.read_csv('C:/Users/prath/OneDrive/Desktop/DSML_PRACTICAL/DSML_PRACTICAL/Datasets/Iris.csv')
+
+# Extract the features (sepal_length, sepal_width, petal_length, petal_width) from the dataset
+print(data.head())
+features = data.iloc[:, :-1].values  # Exclude the last column which is 'species'
+
+# Set K=3, the number of clusters
+K = 3
+
+# Randomly initialize cluster centroids (choose K data points from the dataset)
+random.seed(42)
+initial_centroids = features[random.sample(range(features.shape[0]), K)]
+
+# Function to calculate the Euclidean distance between two points
+def euclidean_distance(a, b):
+    return np.sqrt(np.sum((a - b) ** 2))
+
+# Function to perform K-means clustering
+def kmeans(data, K, initial_centroids, max_iterations=10):
+    centroids = initial_centroids
+    for iteration in range(max_iterations):
+        # Step 1: Assign each point to the nearest centroid
+        clusters = {i: [] for i in range(K)}  # Dictionary to store clusters
+        
+        for point in data:
+            # Calculate distances to each centroid
+            distances = [euclidean_distance(point, centroid) for centroid in centroids]
+            # Find the index of the closest centroid
+            closest_centroid = np.argmin(distances)
+            # Add point to the respective cluster
+            clusters[closest_centroid].append(point)
+        
+        # Step 2: Recalculate centroids (mean of points in the cluster)
+        new_centroids = []
+        for i in range(K):
+            if len(clusters[i]) > 0:  
+                new_centroid = np.mean(clusters[i], axis=0)
+                new_centroids.append(new_centroid)
+            else:
+                new_centroids.append(centroids[i])  # If no points in cluster, keep old centroid
+        
+        centroids = np.array(new_centroids)  # Update centroids for next iteration
+        
+        # If centroids do not change significantly, break early (optional)
+        if np.allclose(centroids, new_centroids, atol=1e-4):
+            break
+    
+    return centroids, clusters
+
+# Run the K-means algorithm
+final_centroids, final_clusters = kmeans(features, K, initial_centroids)
+
+# Print the final cluster means
+print("Final cluster means (centroids) after 10 iterations:")
+for i, centroid in enumerate(final_centroids):
+    print(f"Cluster {i+1}: {centroid}")
